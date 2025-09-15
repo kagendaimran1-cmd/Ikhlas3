@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload News | IHKLAS CHARITY ORGANISATION (ICO)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      background: linear-gradient(to right, #065f46, #10b981);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      font-size: 1.5rem;
+    }
+    main {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    main h2 {
+      color: #065f46;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input, textarea {
+      padding: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    button {
+      background: #10b981;
+      color: white;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #059669;
+    }
+    .success, .error {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    .success { color: #065f46; }
+    .error { color: #ef4444; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ICO News Upload</h1>
+    <a href="news.html" style="color:white; font-weight:600; text-decoration:none;">← Back to gallery upload</a>
+  </header>
+
+  <main>
+    <h2>Post a News Update</h2>
+    <form id="newsForm">
+      <input type="text" id="title" placeholder="News Title" required />
+      <textarea id="description" placeholder="News Description" required></textarea>
+      <input type="file" id="imageFile" accept="image/*" />
+      <button type="submit">Upload News</button>
+    </form>
+    <div id="message"></div>
+  </main>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+  <script>
+    // Firebase config (same as your news.html)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhStm93ZGdb_fN9drl-7nXM8VqaZaEgjk",
+      authDomain: "ihklas-charity-organisation.firebaseapp.com",
+      projectId: "ihklas-charity-organisation",
+      storageBucket: "ihklas-charity-organisation.firebasestorage.app",
+      messagingSenderId: "293097470098",
+      appId: "1:293097470098:web:cc521c9da6f8b96c774e4b"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    const form = document.getElementById('newsForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const file = document.getElementById('imageFile').files[0];
+
+      try {
+        let imageUrl = null;
+        if (file) {
+          const storageRef = storage.ref('news-images/' + Date.now() + '-' + file.name);
+          await storageRef.put(file);
+          imageUrl = await storageRef.getDownloadURL();
+        }
+
+        await db.collection("news").add({
+          title,
+          description,
+          imageUrl,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        message.innerHTML = "<p class='success'>✅ News uploaded successfully!</p>";
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        message.innerHTML = "<p class='error'>❌ Failed to upload news.</p>";
+      }
+    });
+  </script>
+<script>
+  // Prevent context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable certain keys
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+    ) {
+      e.preventDefault();
+      alert('Viewing source code is disabled on this page.');
+    }
+  });
+</script>
+</body>
+</html>

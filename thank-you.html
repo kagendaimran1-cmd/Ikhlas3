@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You | ICO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      color: #065f46;
+      padding: 2rem;
+    }
+    .thank-box {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+    a {
+      background: #10b981;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a:hover {
+      background: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="thank-box">
+    <h1>Thank You! 💚</h1>
+    <p>Your donation or message has been received successfully.<br>We truly appreciate your support and generosity.</p>
+    <a href="index.html">Return to Home</a>
+  </div>
+
+  <script>
+    // Prevent right-click
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    // Prevent keyboard shortcuts: Ctrl+U, Ctrl+Shift+I, F12
+    document.addEventListener('keydown', e => {
+      if(e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) e.preventDefault();
+      if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) e.preventDefault();
+      if(e.key === 'F12') e.preventDefault();
+    });
+  </script>
+
+</body>
+</html>

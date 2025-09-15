@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ICO Charity</title>
+  <style>
+    body { margin:0;font-family:Arial,sans-serif;background:#0f172a;color:white;line-height:1.6;transition:background 0.3s,color 0.3s;}
+    body.light { background:#f0f0f0;color:#111;}
+    header { display:flex;justify-content:space-between;align-items:center;padding:0.8rem 1.5rem;background:#1e293b;position:relative;transition:background 0.3s;}
+    body.light header { background:#e2e8f0; }
+    .logo-img { height: 40px; }
+    #menu-icon { cursor:pointer;font-size:1.5rem;transition:transform 0.3s ease; }
+    #user-icon { cursor:pointer;background:#10b981;width:36px;height:36px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden;}
+    #user-icon img { width:100%;height:100%;border-radius:50%; }
+    #logout-box { display:none;position:absolute;top:70px;right:60px;background:white;color:black;padding:0.5rem 1rem;border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);z-index:1000;opacity:0;transform:translateY(-10px);transition:opacity 0.3s ease, transform 0.3s ease;}
+    #logout-box.show { display:block;opacity:1;transform:translateY(0); }
+    #logout-btn { background:#ef4444;color:white;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer; }
+    #menu-dropdown { display:none;position:absolute;top:70px;right:20px;background:aqua;color:white;border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);overflow:hidden;z-index:1000;opacity:0;transform:translateY(-10px);transition:opacity 0.3s ease, transform 0.3s ease;flex-direction:column; }
+    #menu-dropdown.show { display:flex;opacity:1;transform:translateY(0); }
+    .dropdown-link { display:block;padding:0.8rem 1.2rem;text-decoration:none;color:black; }
+    .dropdown-link:hover { background:#f0f0f0; }
+    nav.desktop-nav { display:none;gap:1rem; }
+    nav.desktop-nav a { color:white;text-decoration:none;font-weight:600;padding:0.3rem 0.5rem; }
+    nav.desktop-nav a:hover { text-decoration:underline; }
+    #theme-toggle { cursor:pointer;font-size:1.3rem;margin-left:1rem; }
+    main { padding:2rem; }
+    .form-container { max-width:400px;margin:2rem auto;padding:2rem;background:#1e293b;border-radius:10px;box-shadow:0 0 15px rgba(0,0,0,0.3);transition:background 0.3s, color 0.3s; }
+    body.light .form-container { background:#fff;color:#111;box-shadow:0 0 15px rgba(0,0,0,0.1); }
+    .form-container h2 { text-align:center;margin-bottom:0.5rem; }
+    .form-container p { text-align:center;margin-bottom:1.5rem;font-size:0.9rem;color:#9ca3af; }
+    .form-container label { display:block;margin:0.5rem 0 0.2rem; }
+    .form-container input { width:100%;padding:0.6rem;margin-bottom:1rem;border:none;border-radius:5px; }
+    .form-container button { width:100%;padding:0.7rem;background:#10b981;color:white;border:none;border-radius:5px;font-weight:600;cursor:pointer;transition:background 0.3s; }
+    .form-container button:hover { background:#059669; }
+    .google-btn { margin-top:1rem;background:white !important;color:#444 !important;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;gap:0.5rem;font-weight:600; }
+    .google-btn img { width:18px; }
+    @media(min-width:768px) { #menu-icon { display:none; } #menu-dropdown { display:none !important; } nav.desktop-nav { display:flex; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html"><img src="a.jpg" alt="ICO Logo" class="logo-img" /></a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a id="login-link" href="#" style="color:white;font-weight:600;">Sign Up</a>
+      <div id="user-icon" style="display:none;"></div>
+      <div id="logout-box"><button id="logout-btn">Logout</button></div>
+      <div id="theme-toggle">🌙</div>
+      <div id="menu-icon">&#8942;</div>
+      <div id="menu-dropdown">
+        <a href="index.html" class="dropdown-link">Home</a>
+        <a href="about.html" class="dropdown-link">About</a>
+        <a href="projects.html" class="dropdown-link">Projects</a>
+        <a href="news.html" class="dropdown-link">News</a>
+        <a href="gallery.html" class="dropdown-link">Gallery</a>
+        <a href="donate.html" class="dropdown-link">Donate</a>
+        <a href="contact.html" class="dropdown-link">Contact</a>
+      </div>
+      <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="news.html">News</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="donate.html">Donate</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="form-container" id="form-box">
+      <h2>Sign Up</h2>
+      <p>Create a new account</p>
+      <form id="signup-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required />
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter a password" required />
+        <button type="submit">Sign Up</button>
+      </form>
+      <button id="google-signin" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Sign in with Google
+      </button>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+    // ----- Firebase Config -----
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
+      authDomain: "media-gallery-72f75.firebaseapp.com",
+      projectId: "media-gallery-72f75",
+      storageBucket: "media-gallery-72f75.appspot.com", // ✅ fixed
+      messagingSenderId: "266520533201",
+      appId: "1:266520533201:web:3302bf17639e30e133cdf0",
+      measurementId: "G-MNZ1055BJL"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ✅ Correct Google Provider
+    const provider = new GoogleAuthProvider();
+
+    // ----- DOM Elements -----
+    const userIcon = document.getElementById('user-icon');
+    const loginLink = document.getElementById('login-link');
+    const logoutBox = document.getElementById('logout-box');
+    const logoutBtn = document.getElementById('logout-btn');
+    const menuIcon = document.getElementById('menu-icon');
+    const menuDropdown = document.getElementById('menu-dropdown');
+    const themeToggle = document.getElementById('theme-toggle');
+    const formBox = document.getElementById('form-box');
+
+    // ----- Auth State -----
+    onAuthStateChanged(auth, user => {
+      if(user){
+        userIcon.textContent = user.email ? user.email.charAt(0).toUpperCase() : "U";
+        userIcon.style.display = 'flex';
+        loginLink.style.display = 'none';
+      } else {
+        userIcon.style.display = 'none';
+        loginLink.style.display = 'inline-block';
+        logoutBox.classList.remove('show');
+      }
+    });
+
+    // ----- User Icon & Logout -----
+    userIcon.addEventListener('click', () => logoutBox.classList.toggle('show'));
+    logoutBtn.addEventListener('click', () => { signOut(auth); logoutBox.classList.remove('show'); });
+
+    // ----- Menu & Theme -----
+    menuIcon.addEventListener('click', () => menuDropdown.classList.toggle('show'));
+    document.addEventListener('click', e => {
+      if(!menuIcon.contains(e.target) && !menuDropdown.contains(e.target)) menuDropdown.classList.remove('show');
+      if(!userIcon.contains(e.target) && !logoutBox.contains(e.target)) logoutBox.classList.remove('show');
+    });
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      themeToggle.textContent = document.body.classList.contains('light') ? '🌞' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    });
+    if(localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light'); themeToggle.textContent='🌞';
+    }
+
+    // ----- Google Sign-In -----
+    formBox.addEventListener('click', e => {
+      if(e.target && e.target.id === 'google-signin'){
+        signInWithPopup(auth, provider).catch(err => alert("Google Sign-In failed: "+err.message));
+      }
+    });
+
+    // ----- Toggle Sign Up / Login Form -----
+    let isSignup = true;
+    loginLink.addEventListener('click', e => {
+      e.preventDefault();
+      if(isSignup){
+        formBox.innerHTML = `
+          <h2>Login</h2>
+          <p>Log in if you already signed up</p>
+          <form id="login-form">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required />
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required />
+            <button type="submit">Login</button>
+          </form>
+          <button id="google-signin" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Sign in with Google
+          </button>
+        `;
+        loginLink.textContent = "Sign Up";
+        isSignup = false;
+      } else {
+        formBox.innerHTML = `
+          <h2>Sign Up</h2>
+          <p>Create a new account</p>
+          <form id="signup-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="Enter your full name" required />
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required />
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter a password" required />
+            <button type="submit">Sign Up</button>
+          </form>
+          <button id="google-signin" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt=""> Sign in with Google
+          </button>
+        `;
+        loginLink.textContent = "Login";
+        isSignup = true;
+      }
+    });
+
+    // ----- Disable DevTools / Source View -----
+    document.addEventListener('keydown', e => {
+      if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'))||(e.ctrlKey&&e.key==='U')){ 
+        e.preventDefault(); 
+        alert("This action is disabled on this page."); 
+      }
+    });
+    document.addEventListener('contextmenu', e=>e.preventDefault());
+  </script>
+</body>
+</html>

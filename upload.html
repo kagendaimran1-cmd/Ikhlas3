@@ -1,0 +1,339 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8" />  
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+<title>Upload</title>  
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">  
+<style>  
+:root { --teal:#0f766e; --bg:#f3f4f6; --dark:#111; }  
+*{box-sizing:border-box}   
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);transition:.3s}  
+body.dark{background:var(--dark);color:#f3f4f6}  
+header{background:var(--teal);color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}  
+nav{position:relative}  
+nav button{background:none;border:none;color:#fff;font-size:1rem;cursor:pointer}  
+nav ul{list-style:none;display:none;position:absolute;right:0;top:2.6rem;background:#fff;color:var(--teal);padding:.5rem;border-radius:8px;border:1px solid #e5e7eb;z-index:1000;min-width:140px}  
+nav ul li{padding:.55rem .85rem;cursor:pointer;border-radius:6px}  
+nav ul li:hover{background:var(--teal);color:#fff}  
+nav ul.show{display:block}  
+#theme-toggle{cursor:pointer;font-size:1.2rem}  
+main{max-width:1000px;margin:2rem auto;padding:1rem;background:#fff;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.08)}  
+body.dark main{background:#1f1f1f}  
+.toolbar{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.75rem}  
+.toolbar select,.toolbar button{padding:.55rem .8rem;border-radius:8px;border:1px solid #d1d5db;cursor:pointer;background:#fff;font-weight:600}  
+body.dark .toolbar select, body.dark .toolbar button{background:#2a2a2a;color:#fff;border:1px solid #3b3b3b}  
+.toolbar .primary{background:var(--teal);color:#fff;border:none}  
+.hint{font-size:.9rem;opacity:.8}  
+.progress{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:.5rem 0 0}  
+.bar{height:100%;width:0;background:#10b981;transition:width .2s}  
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-top:1rem}  
+.card{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:.5rem;display:flex;flex-direction:column;gap:.4rem}  
+body.dark .card{background:#181818;border-color:#2b2b2b}  
+.card img,.card video{width:100%;height:140px;object-fit:cover;border-radius:8px;background:#000}  
+.card audio{width:100%}  
+.name{font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}  
+.remove{position:absolute;top:6px;right:6px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:800;line-height:28px;text-align:center}  
+.section{margin-top:1.5rem}  
+.notification{position:fixed;top:1rem;right:1rem;background:var(--teal);color:#fff;padding:.65rem .9rem;border-radius:8px;display:none;z-index:2000;font-weight:600;cursor:pointer}  
+.small{font-size:.85rem;opacity:.9}  
+.pwbox{margin-top:1rem;display:flex;gap:.6rem;flex-wrap:wrap}  
+.pwbox input{padding:.55rem .7rem;border:1px solid #d1d5db;border-radius:8px}  
+.pwbox button{padding:.55rem .8rem;border:none;background:#f59e0b;color:#fff;border-radius:8px;font-weight:700;cursor:pointer}  
+@media(min-width:768px){  
+  nav ul{display:flex;position:static;background:none;color:#fff;border:none;flex-direction:row;gap:1rem;padding:0}  
+  nav ul li:hover{background:none;color:#e0f7f5}  
+  nav button{display:none}  
+}  
+</style>  
+</head>  
+<body>  
+<header>  
+  <h1>Upload</h1>  
+  <div style="display:flex; align-items:center; gap:1rem;">  
+    <nav>  
+      <button id="menuBtn">☰ Menu</button>  
+      <ul id="menuDropdown">  
+        <li onclick="location.href='gallery.html'">Gallery</li>  
+        <li onclick="location.href='news upload.html'">News Upload</li>  
+        <li onclick="location.href='index.html'">Home</li>  
+      </ul>  
+    </nav>  
+    <span id="theme-toggle">🌙</span>  
+  </div>  
+</header>  
+  
+<main>  
+  <!-- Admin gate -->  
+  <div class="section">  
+    <div class="hint small">Admin access is protected by a password + Firebase anonymous authentication.</div>  
+    <div class="pwbox">  
+      <input id="pw-input" type="password" placeholder="Enter admin password" />  
+      <button id="pw-check">Unlock</button>  
+      <button id="pw-change" title="Change Admin Password">Change Password</button>  
+    </div>  
+  </div>  
+  
+  <!-- Upload controls -->  
+  <div class="section">  
+    <div class="toolbar">  
+      <select id="file-kind">  
+        <option value="image">Image</option>  
+        <option value="video">Video</option>  
+        <option value="audio">Audio</option>  
+      </select>  
+      <input id="file-input" type="file" style="display:none" />  
+      <button id="pick-btn">Select File</button>  
+      <button id="upload-btn" class="primary" disabled>Upload File</button>  
+      <span id="picked-name" class="hint"></span>  
+    </div>  
+    <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>  
+    <div class="hint small">After upload, all users will see the file instantly in <strong>Gallery</strong>. Only Admin can delete.</div>  
+  </div>  
+  
+  <!-- Lists by type -->  
+  <div class="section">  
+    <h2>Images</h2>  
+    <div id="grid-images" class="grid"></div>  
+  </div>  
+  <div class="section">  
+    <h2>Videos</h2>  
+    <div id="grid-videos" class="grid"></div>  
+  </div>  
+  <div class="section">  
+    <h2>Audios</h2>  
+    <div id="grid-audios" class="grid"></div>  
+  </div>  
+</main>  
+  
+<div id="toast" class="notification"></div>  
+
+<!-- Firebase SDKs (Compat version for consistency with gallery.html) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<script>
+  // ---------------- Firebase Setup ----------------
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
+    authDomain: "media-gallery-72f75.firebaseapp.com",
+    projectId: "media-gallery-72f75",
+    storageBucket: "media-gallery-72f75.appspot.com",
+    messagingSenderId: "266520533201",
+    appId: "1:266520533201:web:3302bf17639e30e133cdf0",
+    measurementId: "G-MNZ1055BJL"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+
+  auth.signInAnonymously().catch(console.error);
+
+  // ---------------- Theme Toggle ----------------
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  // ---------------- Menu Toggle ----------------
+  const menuBtn = document.getElementById('menuBtn');
+  const menuDropdown = document.getElementById('menuDropdown');
+  menuBtn.addEventListener('click', () => menuDropdown.classList.toggle('show'));
+
+  // ---------------- Toast Notification ----------------
+  function toast(msg, targetId = null) {
+    const n = document.getElementById('toast');
+    n.textContent = msg;
+    n.style.display = 'block';
+    n.onclick = () => {
+      if (targetId) document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+      n.style.display = 'none';
+    };
+    setTimeout(() => { n.style.display = 'none'; }, 4000);
+  }
+
+  // ---------------- Admin Password ----------------
+  let ADMIN_PW = localStorage.getItem('adminPassword') || 'admin123';
+  const pwInput = document.getElementById('pw-input');
+  const pwCheck = document.getElementById('pw-check');
+  const pwChange = document.getElementById('pw-change');
+  let adminUnlocked = false;
+
+  pwCheck.addEventListener('click', () => {
+    if (pwInput.value === ADMIN_PW) {
+      adminUnlocked = true;
+      toast('Admin unlocked');
+      document.getElementById('upload-btn').disabled = false;
+      refreshAllGrids();
+    } else {
+      adminUnlocked = false;
+      toast('Wrong password');
+    }
+  });
+
+  pwChange.addEventListener('click', () => {
+    const current = prompt('Enter current admin password:');
+    if (current !== ADMIN_PW) return toast('Wrong current password');
+    const np = prompt('New password:');
+    if (!np) return;
+    const cp = prompt('Confirm new password:');
+    if (np !== cp) return toast('Passwords do not match');
+    ADMIN_PW = np;
+    localStorage.setItem('adminPassword', ADMIN_PW);
+    toast('Admin password changed');
+  });
+
+  // ---------------- File Upload ----------------
+  const fileInput = document.getElementById('file-input');
+  const pickBtn = document.getElementById('pick-btn');
+  const uploadBtn = document.getElementById('upload-btn');
+  const pickedName = document.getElementById('picked-name');
+  const bar = document.getElementById('bar');
+
+  let selectedFiles = [];
+  let fileType = 'image';
+
+  pickBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', e => {
+    selectedFiles = Array.from(e.target.files);
+    pickedName.textContent = selectedFiles.map(f => f.name).join(', ');
+  });
+
+  document.getElementById('file-kind').addEventListener('change', e => {
+    fileType = e.target.value;
+  });
+
+  uploadBtn.addEventListener('click', () => {
+    if (!adminUnlocked) return toast('Unlock admin access first');
+    if (selectedFiles.length === 0) return toast('No file selected');
+
+    selectedFiles.forEach(file => {
+      const storageRef = storage.ref(`${fileType}s/${Date.now()}_${file.name}`);
+      const uploadTask = storageRef.put(file);
+
+      uploadTask.on('state_changed', snapshot => {
+        const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        bar.style.width = percent + '%';
+      }, err => {
+        toast('Upload failed: ' + err.message);
+      }, () => {
+        uploadTask.snapshot.ref.getDownloadURL().then(url => {
+          // ✅ Save into "media" collection with correct schema
+          db.collection('media').add({
+            url,
+            name: file.name,
+            type: fileType,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => {
+            bar.style.width = '0';
+            toast(`File "${file.name}" uploaded successfully!`);
+            loadFiles(fileType);
+          });
+        });
+      });
+    });
+
+    fileInput.value = '';
+    selectedFiles = [];
+    pickedName.textContent = '';
+  });
+
+  // ---------------- Load & Display Files ----------------
+  function createCard(docSnap, type) {
+    const container = document.getElementById('grid-' + type + 's');
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const data = docSnap.data();
+
+    if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = data.url;
+      card.appendChild(img);
+    } else if (type === 'video') {
+      const vid = document.createElement('video');
+      vid.src = data.url;
+      vid.controls = true;
+      card.appendChild(vid);
+    } else if (type === 'audio') {
+      const aud = document.createElement('audio');
+      aud.src = data.url;
+      aud.controls = true;
+      card.appendChild(aud);
+    }
+
+    const name = document.createElement('div');
+    name.className = 'name';
+    name.textContent = data.name;
+    card.appendChild(name);
+
+    if (adminUnlocked) {
+      const rm = document.createElement('button');
+      rm.className = 'remove';
+      rm.textContent = '×';
+      rm.onclick = async () => {
+        if (confirm('Delete this file?')) {
+          try {
+            // Delete from Storage
+            const fileRef = storage.refFromURL(data.url);
+            await fileRef.delete();
+            // Delete from Firestore
+            await db.collection('media').doc(docSnap.id).delete();
+            toast('Deleted');
+            card.remove();
+          } catch (err) {
+            toast('Delete failed: ' + err.message);
+          }
+        }
+      };
+      card.appendChild(rm);
+    }
+
+    container.prepend(card);
+  }
+
+  async function loadFiles(type) {
+    const container = document.getElementById('grid-' + type + 's');
+    container.innerHTML = '';
+
+    const snapshot = await db.collection('media')
+      .where('type', '==', type)
+      .orderBy('createdAt', 'desc')
+      .get();
+
+    snapshot.forEach(docSnap => createCard(docSnap, type));
+  }
+
+  function refreshAllGrids() {
+    ['image', 'video', 'audio'].forEach(loadFiles);
+  }
+
+  refreshAllGrids();
+</script>
+<script>
+  // Prevent context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable certain keys
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+    ) {
+      e.preventDefault();
+      alert('Viewing source code is disabled on this page.');
+    }
+  });
+</script>
+</body>  
+</html>

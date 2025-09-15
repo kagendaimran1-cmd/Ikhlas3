@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Media Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --teal:#0f766e; --bg:#f3f4f6; --dark:#111; }
+  *{box-sizing:border-box} body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);color:#111;transition:.3s}
+  body.dark{background:var(--dark);color:#f3f4f6}
+  header{background:var(--teal);color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center}
+  nav ul{list-style:none;display:flex;gap:1rem;margin:0;padding:0}
+  nav ul li{position:relative;cursor:pointer}
+  nav ul li ul{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid #e5e7eb;border-radius:8px;flex-direction:column;min-width:140px;z-index:10}
+  nav ul li:hover ul{display:flex;flex-direction:column}
+  nav ul li ul li{padding:.55rem .85rem;border-radius:6px}
+  nav ul li ul li a{text-decoration:none;color:var(--teal)}
+  nav ul li ul li:hover{background:#d1fae5}
+  #theme-toggle{cursor:pointer;font-size:1.2rem}
+
+  main{max-width:1000px;margin:2rem auto;padding:1rem}
+  h2{text-align:center;margin:.5rem 0 1rem}
+  .tabs{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+  .tab{padding:.5rem .9rem;border:1px solid #d1d5db;border-radius:999px;background:#fff;cursor:pointer;font-weight:600}
+  body.dark .tab{background:#1f1f1f;border-color:#2b2b2b;color:#fff}
+  .tab.active{background:#10b981;color:#fff;border-color:#10b981}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}
+  .item{background:#fff;border-radius:10px;padding:.5rem;position:relative;text-align:center;border:1px solid #e5e7eb}
+  body.dark .item{background:#1f1f1f;border-color:#2b2b2b}
+  .item img,.item video{width:100%;height:150px;object-fit:cover;border-radius:8px;background:#000}
+  .item audio{width:100%}
+  .name{font-size:.9rem;margin:.4rem 0 .6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .btn{padding:.45rem .7rem;border-radius:8px;border:1px solid #d1d5db;background:#fff;cursor:pointer;font-weight:600;text-decoration:none;color:inherit;display:inline-block}
+  body.dark .btn{background:#2a2a2a;border-color:#3a3a3a;color:#fff}
+  .btn.primary{background:#10b981;color:#fff;border-color:#10b981}
+
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);justify-content:center;align-items:center;z-index:1000}
+  .modal.active{display:flex}
+  .modal img,.modal video{max-width:92%;max-height:92%}
+
+  .notification{position:fixed;top:1rem;right:1rem;background:var(--teal);color:#fff;padding:.6rem .9rem;border-radius:8px;display:none;z-index:2000;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <h1>Media Gallery</h1>
+  <div>
+    <nav>
+      <ul>
+        <li>Menu
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="news.html">News</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="donate.html">Donate</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a id="upload-link" href="upload.html">Upload</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <span id="theme-toggle">🌙</span>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button class="tab active" data-tab="image">Images</button>
+    <button class="tab" data-tab="video">Videos</button>
+    <button class="tab" data-tab="audio">Audios</button>
+  </div>
+
+  <section id="panel-image">
+    <h2>Our Images</h2>
+    <div id="grid-images" class="grid"></div>
+  </section>
+
+  <section id="panel-video" style="display:none">
+    <h2>Our Videos</h2>
+    <div id="grid-videos" class="grid"></div>
+  </section>
+
+  <section id="panel-audio" style="display:none">
+    <h2>Our Audios</h2>
+    <div id="grid-audios" class="grid"></div>
+  </section>
+</main>
+
+<div id="modal" class="modal"></div>
+<div id="toast" class="notification"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<script>
+const themeToggle=document.getElementById('theme-toggle');
+themeToggle.addEventListener('click', ()=> {
+  document.body.classList.toggle('dark');
+  themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
+
+function toast(msg){
+  const n=document.getElementById('toast'); n.textContent=msg; n.style.display='block';
+  setTimeout(()=>{n.style.display='none'},2500);
+}
+
+const tabs = document.querySelectorAll('.tab');
+const panels = {
+  image: document.getElementById('panel-image'),
+  video: document.getElementById('panel-video'),
+  audio: document.getElementById('panel-audio')
+};
+tabs.forEach(t=>{
+  t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    const key=t.dataset.tab;
+    Object.keys(panels).forEach(k=> panels[k].style.display = (k===key)?'block':'none');
+    localStorage.setItem('selectedTab', key);
+  });
+});
+
+// 🔑 Password-protected Upload link
+const uploadLink = document.getElementById('upload-link');
+uploadLink.addEventListener('click',(e)=>{
+  e.preventDefault();
+  const password = prompt("Enter password to access upload:");
+  if(password === "sheikh12345"){   // ✅ password is 12345
+    const tab = localStorage.getItem('selectedTab') || 'image';
+    window.location.href = `upload.html?tab=${tab}`;
+  } else if(password !== null) {
+    alert("Incorrect password!");
+  }
+});
+
+const modal = document.getElementById('modal');
+modal.addEventListener('click', ()=> modal.classList.remove('active'));
+
+// ✅ Replaced Firebase Config with the one you provided
+const firebaseConfig = {
+  apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
+  authDomain: "media-gallery-72f75.firebaseapp.com",
+  projectId: "media-gallery-72f75",
+  storageBucket: "media-gallery-72f75.appspot.com",   // ✅ corrected
+  messagingSenderId: "266520533201",
+  appId: "1:266520533201:web:3302bf17639e30e133cdf0",
+  measurementId: "G-MNZ1055BJL"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
+db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+
+const grids = {
+  image: document.getElementById('grid-images'),
+  video: document.getElementById('grid-videos'),
+  audio: document.getElementById('grid-audios')
+};
+
+function itemCard(d){
+  const wrap = document.createElement('div');
+  wrap.className='item';
+
+  let media;
+  if(d.type==='image'){ media=document.createElement('img'); media.src=d.url; }
+  else if(d.type==='video'){ media=document.createElement('video'); media.src=d.url; media.controls=true; }
+  else{ media=document.createElement('audio'); media.src=d.url; media.controls=true; }
+
+  const name = document.createElement('div'); name.className='name'; name.textContent=d.name || '';
+  wrap.appendChild(media); wrap.appendChild(name);
+
+  if(d.type!=='audio'){
+    const view = document.createElement('button'); view.className='btn'; view.textContent='View';
+    view.addEventListener('click', ()=>{
+      modal.innerHTML='';
+      const el = (d.type==='image')? document.createElement('img') : document.createElement('video');
+      el.src=d.url; if(d.type==='video') el.controls=true;
+      modal.appendChild(el); modal.classList.add('active');
+    });
+    wrap.appendChild(view);
+  }
+
+  const dl = document.createElement('a'); dl.className='btn primary'; dl.textContent='Download'; 
+  dl.href=d.url; dl.download=d.name || 'file'; dl.style.display='block'; dl.style.margin='0.5rem auto';
+  wrap.appendChild(dl);
+
+  return wrap;
+}
+
+let lastSeen = Number(localStorage.getItem('lastUpdate') || '0');
+
+function loadOfflineItems(){
+  const offline = JSON.parse(localStorage.getItem('offlineMedia')||'[]');
+  offline.forEach(d=> grids[d.type]?.appendChild(itemCard(d)));
+}
+loadOfflineItems();
+
+db.collection('media').orderBy('createdAt','desc').onSnapshot(snap=>{
+  const newItems=[];
+  for(const k of Object.keys(grids)) grids[k].innerHTML='';
+  snap.forEach(doc=>{
+    const d = doc.data();
+    grids[d.type]?.appendChild(itemCard(d));
+    const ts = d.createdAt?.toMillis?.() || 0;
+    if(ts>lastSeen){ toast('New file uploaded'); lastSeen=ts; localStorage.setItem('lastUpdate',String(lastSeen)); }
+    newItems.push(d);
+  });
+  localStorage.setItem('offlineMedia', JSON.stringify(newItems));
+});
+
+if('serviceWorker' in navigator){
+  const swCode = `
+    const CACHE='media-v1';
+    const ASSETS=['./gallery.html','./upload.html'];
+    self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))); });
+    self.addEventListener('fetch',e=>{
+      e.respondWith(caches.match(e.request).then(r=> r || fetch(e.request).then(resp=>{
+        const copy=resp.clone(); caches.open(CACHE).then(c=>{ if(e.request.method==='GET') c.put(e.request,copy); });
+        return resp;
+      })));
+    });
+  `;
+  const blob = new Blob([swCode], {type:'text/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl);
+}
+</script>
+<script>
+  // Prevent context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable certain keys
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+    ) {
+      e.preventDefault();
+      alert('Viewing source code is disabled on this page.');
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>IHKLAS CHARITY ORGANISATION (ICO)</title>  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>  
+  <link rel="stylesheet" href="styles.css">  
+  <link rel="icon" type="image/png" href="favicon.png" />  
+  <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In -->  
+  <style>  
+    /* --- Your Original Styles (Unchanged) --- */  
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }  
+    body { background: #f8f9fa; color: #222; transition: background 0.4s, color 0.4s; }  
+    header { background: linear-gradient(to right, #065f46, #10b981); color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; transition: background 0.4s; position: relative; }  
+    nav ul { list-style: none; display: flex; gap: 1.2rem; }  
+    nav a { color: white; text-decoration: none; font-weight: 600; transition: 0.3s; }  
+    nav a:hover { color: #ffe79a; }  
+    .logo-img { height: 60px; width: auto; object-fit: contain; }  
+    #user-container { display: flex; align-items: center; gap: 1rem; }  
+    #theme-toggle { cursor: pointer; font-size: 1.4rem; }  
+    #profile-pic { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid white; }  
+    #profile-upload { display: none; }  
+    .menu-toggle { display: none; font-size: 1.6rem; cursor: pointer; background: none; border: none; color: white; }  
+    .mobile-menu { display: none; flex-direction: column; background: #065f46; position: absolute; top: 70px; right: 0; width: 200px; padding: 1rem; border-radius: 6px; z-index: 2000; }  
+    .mobile-menu a { padding: 0.6rem 0; color: white; text-decoration: none; font-weight: 600; }  
+    .mobile-menu a:hover { color: #ffe79a; }  
+    .mobile-menu.show { display: flex; }  
+    @media (max-width: 768px) { nav ul { display: none; } .menu-toggle { display: block; } }  
+    body.dark { background: #111827; color: #f3f4f6; }  
+    body.dark header { background: #1f2937; color: #f3f4f6; }  
+    body.dark nav a { color: #f3f4f6; }  
+    body.dark nav a:hover { color: #facc15; }  
+    body.dark .mobile-menu { background: #1f2937; }  
+    body.dark .mobile-menu a { color: #f3f4f6; }  
+    body.dark .mobile-menu a:hover { color: #facc15; }  
+    body.dark .card { background: #1f2937; color: #f3f4f6; }  
+    body.dark .cta { background: linear-gradient(to right, #374151, #111827); }  
+    body.dark footer { background: #1f2937; }  
+    .slider { position: relative; height: 60vh; overflow: hidden; }  
+    .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1s ease-in-out; }  
+    .slide.active { opacity: 1; z-index: 1; }  
+    .slider-caption { position: absolute; bottom: 40px; width: 100%; text-align: center; color: white; font-size: 1.8rem; font-weight: bold; text-shadow: 1px 1px 6px black; }  
+    .quote { background: #ecfdf5; padding: 2rem 1rem; text-align: center; font-size: 1.2rem; color: #065f46; font-style: italic; }  
+    body.dark .quote { background: #1f2937; color: #facc15; }  
+    .section { max-width: 1100px; margin: 3rem auto; padding: 0 1.5rem; }  
+    .section h2 { color: #065f46; text-align: center; margin-bottom: 1.5rem; }  
+    body.dark .section h2 { color: #facc15; }  
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }  
+    .card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; transition: background 0.3s; }  
+    .card i { font-size: 2rem; color: #10b981; margin-bottom: 1rem; }  
+    .cta { background: linear-gradient(to right, #10b981, #065f46); color: white; text-align: center; padding: 3rem 1.5rem; }  
+    .cta h3 { font-size: 2rem; margin-bottom: 1rem; }  
+    .cta a { display: inline-block; background: white; color: #065f46; padding: 0.7rem 1.4rem; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; }  
+    .cta a:hover { background: #f0fdfa; }  
+    body.dark .cta a { background: #f3f4f6; color: #111827; }  
+    footer { background: #065f46; color: white; text-align: center; padding: 2rem; }  
+  </style>  
+</head>  
+<body>  
+  <header>  
+    <a href="index.html">  
+      <img src="a.jpg" alt="ICO Logo" class="logo-img" />  
+    </a>  
+    <nav>  
+      <ul>  
+        <li><a href="index.html">Home</a></li>  
+        <li><a href="about.html">About</a></li>  
+        <li><a href="projects.html">Projects</a></li>  
+        <li><a href="news.html">News</a></li>  
+        <li><a href="gallery.html">Gallery</a></li>  
+        <li><a href="donate.html">Donate</a></li>  
+        <li><a href="contact.html">Contact</a></li>  
+      </ul>  
+    </nav>  
+    <div id="user-container">  
+      <img id="profile-pic" src="default-avatar.png" alt="Profile" />  
+      <button class="menu-toggle"><i class="fas fa-bars"></i></button>  
+      <div id="theme-toggle">🌙</div>  
+    </div>  
+    <div class="mobile-menu" id="mobile-menu">  
+      <a href="index.html">Home</a>  
+      <a href="about.html">About</a>  
+      <a href="projects.html">Projects</a>  
+      <a href="news.html">News</a>  
+      <a href="gallery.html">Gallery</a>  
+      <a href="donate.html">Donate</a>  
+      <a href="contact.html">Contact</a>  
+    </div>  
+  </header>  
+
+  <section class="slider">  
+    <div class="slide active" style="background-image: url('b.jpg');"></div>  
+    <div class="slide" style="background-image: url('c.jpg');"></div>  
+    <div class="slide" style="background-image: url('d.jpg');"></div>      
+    <div class="slide" style="background-image: url('e.jpg');"></div>  
+    <div class="slide" style="background-image: url('f.jpg');"></div>  
+    <div class="slide" style="background-image: url('g.jpg');"></div>  
+    <div class="slide" style="background-image: url('h.jpg');"></div>   
+    <div class="slide" style="background-image: url('i.jpg');"></div>  
+    <div class="slide" style="background-image: url('j.jpg');"></div>  
+    <div class="slide" style="background-image: url('l.jpg');"></div>  
+    <div class="slide" style="background-image: url('m.jpg');"></div>  
+    <div class="slide" style="background-image: url('n.jpg');"></div>  
+    <div class="slide" style="background-image: url('o.jpg');"></div>  
+    <div class="slide" style="background-image: url('p.jpg');"></div>  
+    <div class="slider-caption" id="slider-caption">Serving Humanity with Sincerity</div>  
+  </section>  
+
+  <!-- ✅ Google Sign-In Integration with your client ID -->  
+  <div id="g_id_onload"  
+       data-client_id="859431428155-lu9ll5dj26eerd1jvsjisjhlvksl8h5s.apps.googleusercontent.com"  
+       data-callback="handleCredentialResponse">  
+  </div>  
+  <div class="g_id_signin" data-type="standard"></div>  
+
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>  
+  <script>  
+// ---------------- Google Sign-In Integration ----------------
+window.onload = () => {
+  google.accounts.id.initialize({
+    client_id: "694163077153-lrfv5kqe91d2ruts70ljvam9k1nelv3q.apps.googleusercontent.com",
+    callback: handleCredentialResponse
+  });
+
+  google.accounts.id.renderButton(
+    document.querySelector(".g_id_signin"),
+    { theme: "outline", size: "large" }
+  );
+
+  google.accounts.id.prompt();
+};
+
+// ---------------- Handle User Profile ----------------
+const profilePic = document.getElementById('profile-pic');
+if (localStorage.getItem('profilePic')) {
+  profilePic.src = localStorage.getItem('profilePic');
+}
+
+function handleCredentialResponse(response) {
+  const data = jwt_decode(response.credential);
+  if (data.picture) {
+    profilePic.src = data.picture;
+    localStorage.setItem('profilePic', data.picture);
+  }
+  console.log("User Info:", data);
+}
+
+// ---------------- Theme Toggle ----------------
+const themeToggle = document.getElementById('theme-toggle');
+if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.add('dark');
+  themeToggle.textContent = '🌞';
+}
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  const dark = document.body.classList.contains('dark');
+  themeToggle.textContent = dark ? '🌞' : '🌙';
+  localStorage.setItem('theme', dark ? 'dark' : 'light');
+});
+
+// ---------------- Mobile Menu Toggle ----------------
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+menuToggle.addEventListener('click', () => {
+  mobileMenu.classList.toggle('show');
+});
+
+// ---------------- Slider Functionality ----------------
+const slides = document.querySelectorAll('.slide');
+const caption = document.getElementById('slider-caption');
+const captions = [
+  "standing together for Islam",
+  "Empowering communities with dignity",
+  "Serving for the sake of Allah",
+  "Uplifting hearts ❤️ through compassion",
+  "Together in shurk(gratitude)",
+  "Charity that brings barakah",
+  "Restoring hope, reviving lives",
+  "Kindness is a form of worship",
+  "Giving today, bringing Jannah tomorrow",
+  "Guide by Taqwa, driven by love",
+  "Healing hearts with Rahmah",
+  "Serving with love, serving with faith",
+  "Where compassion meets action",
+  "Sadaq that changes lives",
+  "A small act, a big reward"
+];
+let index = 0;
+
+setInterval(() => {
+  slides[index].classList.remove('active');
+  index = (index + 1) % slides.length;
+  slides[index].classList.add('active');
+  caption.textContent = captions[index];
+}, 5000);
+
+// ---------------- Disable Right-Click & Key Shortcuts ----------------
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', function(e) {
+  if (
+    e.keyCode === 123 || 
+    (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+    (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) 
+  ) {
+    e.preventDefault();
+    alert('Viewing source code is disabled on this page.');
+  }
+});
+  </script>  
+
+  <section class="quote">  
+    “Whoever relieves a believer’s distress, Allah will relieve his distress on the Day of Resurrection.” – Prophet Muhammad (ﷺ)  
+  </section>  
+
+  <section class="section">  
+    <h2>What We Do</h2>  
+    <div class="cards">  
+      <div class="card">  
+        <i class="fas fa-hand-holding-heart"></i>  
+        <h3>Humanitarian Aid</h3>  
+        <p>We provide food, water, and shelter to those affected by poverty and disasters.</p>  
+      </div>  
+      <div class="card">  
+        <i class="fas fa-book-reader"></i>  
+        <h3>Islamic Education</h3>  
+        <p>ICO supports Islamic schools and Qur’an learning centers across the region.</p>  
+      </div>  
+      <div class="card">  
+        <i class="fas fa-people-arrows"></i>  
+        <h3>Community Empowerment</h3>  
+        <p>We train, support, and uplift youth and women through various programs.</p>  
+      </div>  
+    </div>  
+  </section>  
+
+  <section class="cta">  
+    <h3>Join Us in Making a Difference</h3>  
+    <a href="donate.html">Support Our Work</a>  
+  </section>  
+
+  <footer>  
+    &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.  
+  </footer>  
+</body>  
+</html>

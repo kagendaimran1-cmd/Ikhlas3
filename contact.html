@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us | IHKLAS CHARITY ORGANISATION (ICO)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #f9fafb; color: #222; transition: background 0.3s, color 0.3s; }
+    body.dark { background: #1a1a1a; color: #f1f1f1; }
+
+    header { background: linear-gradient(to right, #065f46, #10b981); color: white;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; }
+    .logo-img { height: 60px; }
+    nav ul { list-style: none; display: flex; gap: 1.2rem; }
+    nav a { color: white; text-decoration: none; font-weight: 600; }
+    nav a:hover { color: #ffe79a; }
+
+    #theme-toggle { cursor: pointer; font-size: 1.3rem; color: white; }
+    .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+    nav { display: flex; }
+    @media (max-width: 768px) {
+      nav { display: none; flex-direction: column; background: #065f46; position: absolute; top: 70px; left: 0; width: 100%; padding: 1rem; }
+      nav ul { flex-direction: column; gap: 1rem; }
+      nav.active { display: flex; }
+      .menu-toggle { display: block; color: white; }
+    }
+
+    .hero { background: url('assets/images/contact-hero.jpg') center/cover no-repeat; height: 40vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; }
+    .hero h1 { background: rgba(0,0,0,0.5); padding: 1rem 2rem; border-radius: 10px; font-size: 2.5rem; }
+
+    .section { max-width: 700px; margin: 3rem auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    body.dark .section { background: #2a2a2a; }
+    .section h2 { color: #065f46; margin-bottom: 1.5rem; text-align: center; }
+    form label { display: block; margin-top: 1rem; font-weight: 600; }
+    input, textarea { width: 100%; padding: 0.7rem; margin-top: 0.3rem; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; resize: vertical; }
+    button { margin-top: 2rem; background: #10b981; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-size: 1rem; cursor: pointer; width: 100%; font-weight: 600; }
+    button:hover { background: #059669; }
+
+    footer { background: #065f46; color: white; text-align: center; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html"><img src="a.jpg" alt="ICO Logo" class="logo-img" /></a>
+    <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="donate.html">Donate</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div id="user-container" style="display:flex; align-items:center; gap:1rem;">
+      <i id="theme-toggle" class="fas fa-moon"></i>
+      <a id="login-link" href="login.html" style="color:white;font-weight:600;">Login</a>
+      <div id="user-icon" style="display:none; cursor:pointer; background:#10b981; width:36px; height:36px; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;"></div>
+      <div id="logout-box" style="display:none; position:absolute; top:70px; right:20px; background:white; color:black; padding:0.5rem 1rem; border-radius:6px; box-shadow:0 4px 10px rgba(0,0,0,0.1); z-index:1000;">
+        <button id="logout-btn" style="background:#ef4444; color:white; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero"><h1>Contact Us</h1></section>
+
+  <section class="section">
+    <h2>We'd Love to Hear From You</h2>
+    <form id="contact-form">
+      <label for="name">Full Name</label>
+      <input type="text" name="name" required />
+      <label for="email">Email Address</label>
+      <input type="email" name="email" required />
+      <label for="message">Message</label>
+      <textarea name="message" rows="5" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.
+  </footer>
+
+  <!-- Firebase & Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
+      authDomain: "media-gallery-72f75.firebaseapp.com",
+      projectId: "media-gallery-72f75",
+      storageBucket: "media-gallery-72f75.firebasestorage.app",
+      messagingSenderId: "266520533201",
+      appId: "1:266520533201:web:3302bf17639e30e133cdf0",
+      measurementId: "G-MNZ1055BJL"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Auth & User Icon
+    const userIcon = document.getElementById('user-icon');
+    const loginLink = document.getElementById('login-link');
+    const logoutBox = document.getElementById('logout-box');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    onAuthStateChanged(auth, user => {
+      if(user){
+        userIcon.textContent = user.email ? user.email.charAt(0).toUpperCase() : "U";
+        userIcon.style.display = 'flex';
+        loginLink.style.display = 'none';
+      } else {
+        userIcon.style.display = 'none';
+        loginLink.style.display = 'inline-block';
+        logoutBox.style.display = 'none';
+      }
+    });
+
+    userIcon.addEventListener('click', () => {
+      logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).catch(console.error);
+      logoutBox.style.display = 'none';
+    });
+
+    // Contact Form Submission
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = contactForm.name.value.trim();
+      const email = contactForm.email.value.trim();
+      const message = contactForm.message.value.trim();
+
+      if(!name || !email || !message) return alert("All fields are required.");
+
+      try {
+        await addDoc(collection(db, "contact_messages"), {
+          name,
+          email,
+          message,
+          timestamp: serverTimestamp()
+        });
+        alert("Message sent! The organization owner will see it.");
+        contactForm.reset();
+      } catch(err) {
+        console.error(err);
+        alert("Failed to send message. Please try again later.");
+      }
+    });
+
+    // Dark/Light Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      themeToggle.classList.toggle('fa-moon');
+      themeToggle.classList.toggle('fa-sun');
+    });
+
+    // Mobile Menu
+    document.querySelector('.menu-toggle').addEventListener('click', () => {
+      document.querySelector('nav').classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

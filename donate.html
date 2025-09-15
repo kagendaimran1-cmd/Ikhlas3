@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donate | IHKLAS CHARITY ORGANISATION (ICO)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="icon" href="favicon.png" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #f0fdf4; color: #222; }
+    header {
+      background: linear-gradient(to right, #065f46, #10b981);
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    header nav a {
+      color: whi
+      text-decoration: none;
+      font-weight: 600;
+    }
+    header nav a:hover {
+      color: #ffe79a;
+    }
+
+    .hero {
+      background: url('assets/images/donate-banner.jpg') center/cover no-repeat;
+      height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      background: rgba(0,0,0,0.4);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+    }
+
+    .donate-section {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    .donate-section h2 {
+      text-align: center;
+      color: #065f46;
+      margin-bottom: 2rem;
+    }
+
+    .donate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .donation-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .donation-card i {
+      font-size: 2.3rem;
+      color: #10b981;
+      margin-bottom: 1rem;
+    }
+    .donation-card h3 {
+      color: #065f46;
+      margin-bottom: 0.4rem;
+    }
+    .donation-card p {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .donation-card a {
+      display: inline-block;
+      margin: 0.4rem 5px;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .email-btn {
+      background: #2563eb;
+      color: white;
+    }
+    .whatsapp-btn {
+      background: #25d366;
+      color: white;
+    }
+
+    footer {
+      background: #065f46;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>IHKLAS CHARITY ORGANISATION (ICO)</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="news.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="donate.html">Donate</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Make a Difference with Your Donation</h1>
+</section>
+
+<section class="donate-section">
+  
+  <h2>Select an Area to Support</h2>
+  
+<div style="text-align: center; margin-bottom: 2rem;">
+  <input 
+    type="text" 
+    id="donateSearch" 
+    placeholder="Search donation categories..." 
+    style="padding: 0.7rem; width: 90%; max-width: 400px; border-radius: 6px; border: 1px solid #ccc;" 
+    onkeyup="filterDonations()" 
+  />
+</div>
+
+  <div class="donate-grid">
+    <div class="donation-card">
+      <i class="fas fa-book"></i>
+      <h3>Education</h3>
+      <p>Support Qur’an and formal education for underprivileged children.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Education Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=I%20want%20to%20support%20Education">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-hand-holding-water"></i>
+      <h3>Water Projects</h3>
+      <p>Help build boreholes and tanks for clean water access.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Water Project Donation">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20to%20Water%20Projects">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-utensils"></i>
+      <h3>Feeding the Poor</h3>
+      <p>Provide meals during Ramadhan and emergencies.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Food Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20Food">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-clinic-medical"></i>
+      <h3>Medical Aid</h3>
+      <p>Fund medical camps and provide medication for the sick.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Medical Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20to%20Medical%20Aid">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-mosque"></i>
+      <h3>Mosque Construction</h3>
+      <p>Help construct and renovate mosques across the region.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Mosque Construction">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Support%20Mosque%20Construction">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-users"></i>
+      <h3>Orphan Support</h3>
+      <p>Care for orphans by covering their education, food, and shelter.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Orphan Care">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Support%20Orphans">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-tree"></i>
+      <h3>Environmental Care</h3>
+      <p>Support tree planting and sanitation initiatives.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Environment Donation">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20for%20Environment">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-hands-helping"></i>
+      <h3>Disaster Relief</h3>
+      <p>Respond to floods, fires, and crises with emergency support.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Disaster Relief Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Disaster%20Relief%20Donation">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-chalkboard-teacher"></i>
+      <h3>Da'wah Missions</h3>
+      <p>Support outreach and Islamic education programs in rural areas.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Da'wah Missions Donation">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20for%20Da'wah">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-person-booth"></i>
+      <h3>Vocational Training</h3>
+      <p>Help youth learn skills like tailoring, carpentry, and more.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Vocational Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Support%20Vocational%20Training">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-seedling"></i>
+      <h3>Agricultural Empowerment</h3>
+      <p>Fund farm tools, seeds, and training for community growth.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=Agricultural Support">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20to%20Agriculture">WhatsApp</a>
+    </div>
+    <div class="donation-card">
+      <i class="fas fa-globe-africa"></i>
+      <h3>ICT Access</h3>
+      <p>Give youth access to digital tools, training, and internet cafes.</p>
+      <a class="email-btn" href="mailto:ikhlascharityorg@gmail.com?subject=ICT Empowerment">Email</a>
+      <a class="whatsapp-btn" href="https://wa.me/256765667237?text=Donate%20to%20ICT%20Access">WhatsApp</a>
+    </div>
+  </div>
+</section>
+<script>
+  function filterDonations() {
+    const input = document.getElementById('donateSearch').value.toLowerCase();
+    const cards = document.querySelectorAll('.donation-card');
+
+    cards.forEach(card => {
+      const content = card.innerText.toLowerCase();
+      if (content.includes(input)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+<script>
+  // Prevent context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable certain keys
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+    ) {
+      e.preventDefault();
+      alert('Viewing source code is disabled on this page.');
+    }
+  });
+</script>
+
+<footer>
+  &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.
+</footer>
+</body>
+</html>
+
+

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Projects | IHKLAS CHARITY ORGANISATION (ICO)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #222;
+    }
+    header {
+      background: linear-gradient(to right, #065f46, #10b981);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-img {
+      height: 60px;
+      width: auto;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.2rem;
+    }
+    nav li {
+      position: relative;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    nav a:hover {
+      color: #ffe79a;
+    }
+
+    /* Dropdown menu */
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      min-width: 180px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      z-index: 1000;
+    }
+    .dropdown-content a {
+      display: block;
+      padding: 0.7rem 1rem;
+      color: #065f46;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .dropdown-content a:hover {
+      background: #f1f1f1;
+      color: #10b981;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #user-container {
+      display: flex; align-items: center; gap: 1rem;
+    }
+    #login-link {
+      color: white; font-weight: 600;
+    }
+    #user-icon {
+      display: none; cursor: pointer;
+      background: #10b981;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold;
+    }
+    #logout-box {
+      display: none;
+      position: absolute;
+      top: 70px; right: 20px;
+      background: white; color: black;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .hero {
+      background: url('assets/images/projects-hero.jpg') center/cover no-repeat;
+      height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero h1 {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 2.5rem;
+    }
+
+    .section {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    .section h2 {
+      color: #065f46;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .project-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+    }
+    .project-card i {
+      font-size: 2.2rem;
+      color: #10b981;
+      margin-bottom: 1rem;
+    }
+    .project-card h3 {
+      color: #065f46;
+      margin-bottom: 0.5rem;
+    }
+    .project-card p {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    footer {
+      background: #065f46;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html">
+      <img src="a.jpg" alt="ICO Logo" class="logo-img" />
+    </a>
+    <nav>
+      <ul>
+        <!-- New single dropdown for all links -->
+        <li class="dropdown">
+          <a href="#">Menu ▾</a>
+          <div class="dropdown-content">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="projects.html">Projects</a>
+            <a href="news.html">News</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="donate.html">Donate</a>
+            <a href="contact.html">Contact</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <div id="user-container">
+      <a id="login-link" href="login.html">Login</a>
+      <div id="user-icon"></div>
+      <div id="logout-box">
+        <button id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Our Projects</h1>
+  </section>
+
+  <section class="section">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <input type="text" id="projectSearch" placeholder="Search projects..." style="padding: 0.7rem; width: 90%; max-width: 400px; border-radius: 6px; border: 1px solid #ccc;" onkeyup="filterProjects()" />
+    </div>
+
+    <h2>Empowering Communities Through Action</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <i class="fas fa-hand-holding-water"></i>
+        <h3>Clean Water Initiative</h3>
+        <p>Installing wells and tanks to ensure clean water access in underserved areas.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-school"></i>
+        <h3>Education for All</h3>
+        <p>Supporting Islamic and formal education for orphans and needy children.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-clinic-medical"></i>
+        <h3>Medical Aid & Relief</h3>
+        <p>Free medical camps, medicine distribution, and health awareness outreach.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-mosque"></i>
+        <h3>Mosque Renovation</h3>
+        <p>Renovating and constructing mosques to strengthen Islamic identity.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-utensils"></i>
+        <h3>Feeding the Hungry</h3>
+        <p>Feeding programs for orphans, widows, and struggling families.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-user-graduate"></i>
+        <h3>Scholarships for Orphans</h3>
+        <p>Covering tuition, uniforms, and books for disadvantaged youth.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-book"></i>
+        <h3>Islamic Book Publishing</h3>
+        <p>Distributing Qur’ans and Islamic materials in local languages.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-kaaba"></i>
+        <h3>Hajj Support</h3>
+        <p>Helping elderly Muslims fulfill their dream of going to Hajj.</p>
+      </div>
+
+      <div class="project-card">
+        <i class="fas fa-female"></i>
+        <h3>Women Empowerment</h3>
+        <p>Vocational training for women in tailoring, crafts, and small businesses.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.
+  </footer>
+  
+  <script>
+  function filterProjects() {
+    const input = document.getElementById('projectSearch').value.toLowerCase();
+    const cards = document.querySelectorAll('.project-card');
+
+    cards.forEach(card => {
+      const text = card.innerText.toLowerCase();
+      card.style.display = text.includes(input) ? 'block' : 'none';
+    });
+  }
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  // ----- Firebase Config -----
+  const firebaseConfig = {
+    apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
+    authDomain: "media-gallery-72f75.firebaseapp.com",
+    projectId: "media-gallery-72f75",
+    storageBucket: "media-gallery-72f75.firebasestorage.app",
+    messagingSenderId: "266520533201",
+    appId: "1:266520533201:web:3302bf17639e30e133cdf0",
+    measurementId: "G-MNZ1055BJL"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // ----- DOM Elements -----
+  const userIcon = document.getElementById('user-icon');
+  const loginLink = document.getElementById('login-link');
+  const logoutBox = document.getElementById('logout-box');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  // ----- Auth State -----
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      const initial = user.email ? user.email.charAt(0).toUpperCase() : "U";
+      userIcon.textContent = initial;
+      userIcon.style.display = 'flex';
+      loginLink.style.display = 'none';
+    } else {
+      userIcon.style.display = 'none';
+      loginLink.style.display = 'inline-block';
+      logoutBox.style.display = 'none';
+    }
+  });
+
+  // ----- User Icon & Logout -----
+  userIcon.addEventListener('click', () => {
+    logoutBox.style.display = logoutBox.style.display === 'block' ? 'none' : 'block';
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    signOut(auth).catch(err => console.error("Sign out failed:", err));
+    logoutBox.style.display = 'none';
+  });
+</script>
+  <script>
+  // Prevent context menu
+  document.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Disable certain keys
+  document.addEventListener('keydown', function(e) {
+    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
+    ) {
+      e.preventDefault();
+      alert('Viewing source code is disabled on this page.');
+    }
+  });
+</script>
+</body>
+</html>
