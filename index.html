@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">  
 <head>  
@@ -8,9 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>  
   <link rel="stylesheet" href="styles.css">  
   <link rel="icon" type="image/png" href="favicon.png" />  
-  <script src="https://accounts.google.com/gsi/client" async defer></script> <!-- Google Sign-In -->  
+
   <style>  
-    /* --- Your Original Styles (Unchanged) --- */  
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }  
     body { background: #f8f9fa; color: #222; transition: background 0.4s, color 0.4s; }  
     header { background: linear-gradient(to right, #065f46, #10b981); color: white; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; transition: background 0.4s; position: relative; }  
@@ -58,95 +58,59 @@
     footer { background: #065f46; color: white; text-align: center; padding: 2rem; }  
   </style>  
 </head>  
+
 <body>  
-  <header>  
-    <a href="index.html">  
-      <img src="a.jpg" alt="ICO Logo" class="logo-img" />  
-    </a>  
-    <nav>  
-      <ul>  
-        <li><a href="index.html">Home</a></li>  
-        <li><a href="about.html">About</a></li>  
-        <li><a href="projects.html">Projects</a></li>  
-        <li><a href="news.html">News</a></li>  
-        <li><a href="gallery.html">Gallery</a></li>  
-        <li><a href="donate.html">Donate</a></li>  
-        <li><a href="contact.html">Contact</a></li>  
-      </ul>  
-    </nav>  
-    <div id="user-container">  
-      <img id="profile-pic" src="default-avatar.png" alt="Profile" />  
-      <button class="menu-toggle"><i class="fas fa-bars"></i></button>  
-      <div id="theme-toggle">🌙</div>  
-    </div>  
-    <div class="mobile-menu" id="mobile-menu">  
-      <a href="index.html">Home</a>  
-      <a href="about.html">About</a>  
-      <a href="projects.html">Projects</a>  
-      <a href="news.html">News</a>  
-      <a href="gallery.html">Gallery</a>  
-      <a href="donate.html">Donate</a>  
-      <a href="contact.html">Contact</a>  
-    </div>  
-  </header>  
 
-  <section class="slider">  
-    <div class="slide active" style="background-image: url('b.jpg');"></div>  
-    <div class="slide" style="background-image: url('c.jpg');"></div>  
-    <div class="slide" style="background-image: url('d.jpg');"></div>      
-    <div class="slide" style="background-image: url('e.jpg');"></div>  
-    <div class="slide" style="background-image: url('f.jpg');"></div>  
-    <div class="slide" style="background-image: url('g.jpg');"></div>  
-    <div class="slide" style="background-image: url('h.jpg');"></div>   
-    <div class="slide" style="background-image: url('i.jpg');"></div>  
-    <div class="slide" style="background-image: url('j.jpg');"></div>  
-    <div class="slide" style="background-image: url('l.jpg');"></div>  
-    <div class="slide" style="background-image: url('m.jpg');"></div>  
-    <div class="slide" style="background-image: url('n.jpg');"></div>  
-    <div class="slide" style="background-image: url('o.jpg');"></div>  
-    <div class="slide" style="background-image: url('p.jpg');"></div>  
-    <div class="slider-caption" id="slider-caption">Serving Humanity with Sincerity</div>  
-  </section>  
-
-  <!-- ✅ Google Sign-In Integration with your client ID -->  
-  <div id="g_id_onload"  
-       data-client_id="859431428155-lu9ll5dj26eerd1jvsjisjhlvksl8h5s.apps.googleusercontent.com"  
-       data-callback="handleCredentialResponse">  
+<header>  
+  <a href="index.html">  
+    <img src="a.jpg" alt="ICO Logo" class="logo-img" />  
+  </a>  
+  <nav>  
+    <ul>  
+      <li><a href="index.html">Home</a></li>  
+      <li><a href="about.html">About</a></li>  
+      <li><a href="projects.html">Projects</a></li>  
+      <li><a href="news.html">News</a></li>  
+      <li><a href="gallery.html">Gallery</a></li>  
+      <li><a href="donate.html">Donate</a></li>  
+      <li><a href="contact.html">Contact</a></li>  
+    </ul>  
+  </nav>  
+  <div id="user-container">  
+    <img id="profile-pic" src="default-avatar.png" alt="Profile" />  
+    <button class="menu-toggle"><i class="fas fa-bars"></i></button>  
+    <div id="theme-toggle">🌙</div>  
   </div>  
-  <div class="g_id_signin" data-type="standard"></div>  
+  <div class="mobile-menu" id="mobile-menu">  
+    <a href="index.html">Home</a>  
+    <a href="about.html">About</a>  
+    <a href="projects.html">Projects</a>  
+    <a href="news.html">News</a>  
+    <a href="gallery.html">Gallery</a>  
+    <a href="donate.html">Donate</a>  
+    <a href="contact.html">Contact</a>  
+  </div>  
+</header>  
 
-  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>  
-  <script>  
-// ---------------- Google Sign-In Integration ----------------
-window.onload = () => {
-  google.accounts.id.initialize({
-    client_id: "694163077153-lrfv5kqe91d2ruts70ljvam9k1nelv3q.apps.googleusercontent.com",
-    callback: handleCredentialResponse
-  });
+<section class="slider">  
+  <div class="slide active" style="background-image: url('b.jpg');"></div>  
+  <div class="slide" style="background-image: url('c.jpg');"></div>  
+  <div class="slide" style="background-image: url('d.jpg');"></div>  
+  <div class="slide" style="background-image: url('e.jpg');"></div>  
+  <div class="slide" style="background-image: url('f.jpg');"></div>  
+  <div class="slide" style="background-image: url('g.jpg');"></div>  
+  <div class="slide" style="background-image: url('h.jpg');"></div>  
+  <div class="slide" style="background-image: url('i.jpg');"></div>  
+  <div class="slide" style="background-image: url('j.jpg');"></div>  
+  <div class="slide" style="background-image: url('l.jpg');"></div>  
+  <div class="slide" style="background-image: url('m.jpg');"></div>  
+  <div class="slide" style="background-image: url('n.jpg');"></div>  
+  <div class="slide" style="background-image: url('o.jpg');"></div>  
+  <div class="slide" style="background-image: url('p.jpg');"></div>  
+  <div class="slider-caption" id="slider-caption">Serving Humanity with Sincerity</div>  
+</section>  
 
-  google.accounts.id.renderButton(
-    document.querySelector(".g_id_signin"),
-    { theme: "outline", size: "large" }
-  );
-
-  google.accounts.id.prompt();
-};
-
-// ---------------- Handle User Profile ----------------
-const profilePic = document.getElementById('profile-pic');
-if (localStorage.getItem('profilePic')) {
-  profilePic.src = localStorage.getItem('profilePic');
-}
-
-function handleCredentialResponse(response) {
-  const data = jwt_decode(response.credential);
-  if (data.picture) {
-    profilePic.src = data.picture;
-    localStorage.setItem('profilePic', data.picture);
-  }
-  console.log("User Info:", data);
-}
-
+<script>  
 // ---------------- Theme Toggle ----------------
 const themeToggle = document.getElementById('theme-toggle');
 if (localStorage.getItem('theme') === 'dark') {
@@ -209,40 +173,41 @@ document.addEventListener('keydown', function(e) {
     alert('Viewing source code is disabled on this page.');
   }
 });
-  </script>  
+</script>  
 
-  <section class="quote">  
-    “Whoever relieves a believer’s distress, Allah will relieve his distress on the Day of Resurrection.” – Prophet Muhammad (ﷺ)  
-  </section>  
+<section class="quote">  
+  “Whoever relieves a believer’s distress, Allah will relieve his distress on the Day of Resurrection.” – Prophet Muhammad (ﷺ)  
+</section>  
 
-  <section class="section">  
-    <h2>What We Do</h2>  
-    <div class="cards">  
-      <div class="card">  
-        <i class="fas fa-hand-holding-heart"></i>  
-        <h3>Humanitarian Aid</h3>  
-        <p>We provide food, water, and shelter to those affected by poverty and disasters.</p>  
-      </div>  
-      <div class="card">  
-        <i class="fas fa-book-reader"></i>  
-        <h3>Islamic Education</h3>  
-        <p>ICO supports Islamic schools and Qur’an learning centers across the region.</p>  
-      </div>  
-      <div class="card">  
-        <i class="fas fa-people-arrows"></i>  
-        <h3>Community Empowerment</h3>  
-        <p>We train, support, and uplift youth and women through various programs.</p>  
-      </div>  
+<section class="section">  
+  <h2>What We Do</h2>  
+  <div class="cards">  
+    <div class="card">  
+      <i class="fas fa-hand-holding-heart"></i>  
+      <h3>Humanitarian Aid</h3>  
+      <p>We provide food, water, and shelter to those affected by poverty and disasters.</p>  
     </div>  
-  </section>  
+    <div class="card">  
+      <i class="fas fa-book-reader"></i>  
+      <h3>Islamic Education</h3>  
+      <p>ICO supports Islamic schools and Qur’an learning centers across the region.</p>  
+    </div>  
+    <div class="card">  
+      <i class="fas fa-people-arrows"></i>  
+      <h3>Community Empowerment</h3>  
+      <p>We train, support, and uplift youth and women through various programs.</p>  
+    </div>  
+  </div>  
+</section>  
 
-  <section class="cta">  
-    <h3>Join Us in Making a Difference</h3>  
-    <a href="donate.html">Support Our Work</a>  
-  </section>  
+<section class="cta">  
+  <h3>Join Us in Making a Difference</h3>  
+  <a href="donate.html">Support Our Work</a>  
+</section>  
 
-  <footer>  
-    &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.  
-  </footer>  
+<footer>  
+  &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.  
+</footer>  
+
 </body>  
 </html>
