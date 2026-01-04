@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kagendaimran1-cmd.github.io/Ikhlas3/sitemap.xml
