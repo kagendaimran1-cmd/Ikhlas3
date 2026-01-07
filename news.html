@@ -10,48 +10,32 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="styles.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { background: #f8f9fa; color: #222; }
-    header { background: linear-gradient(to right, #065f46, #10b981); color: white;
-      display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem;
-      position: sticky; top: 0; z-index: 1000; }
-    .logo-img { height: 60px; width: auto; }
-    nav ul { list-style: none; display: flex; gap: 1.2rem; }
-    nav a { color: white; text-decoration: none; font-weight: 600; }
-    nav a:hover { color: #ffe79a; }
-    #loginBtn { background: white; color: #065f46; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; text-decoration: none; }
-    .menu-toggle { display: none; font-size: 1.6rem; cursor: pointer; background: none; border: none; color: white; }
-    @media (max-width: 768px) {
-      nav ul { display: none; flex-direction: column; background: #065f46; position: absolute; top: 70px; right: 20px; padding: 1rem; border-radius: 8px; }
-      nav ul.show { display: flex; }
-      .menu-toggle { display: block; }
-    }
-    .hero { background: url('assets/images/news-hero.jpg') center/cover no-repeat;
-      height: 40vh; display: flex; align-items: center; justify-content: center;
-      text-align: center; color: white; }
-    .hero h1 { background: rgba(0, 0, 0, 0.5); padding: 1rem 2rem; border-radius: 10px; font-size: 2.5rem; }
-    .section { max-width: 1100px; margin: 3rem auto; padding: 0 1.5rem; }
-    .section h2 { color: #065f46; text-align: center; margin-bottom: 1.5rem; }
-    .calendar-box { display: flex; justify-content: space-between; background: #ecfdf5; border-radius: 8px;
-      padding: 1rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 3px 8px rgba(0,0,0,0.05); }
-    .calendar-item { font-size: 1.2rem; font-weight: 600; color: #065f46; }
-    .news-card { background: white; margin-bottom: 2rem; padding: 1.5rem; border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-    .news-card h3 { margin-bottom: 0.5rem; color: #10b981; }
-    .news-card p { font-size: 0.95rem; line-height: 1.6; }
-    .feed-section h2 { color: #065f46; text-align: center; margin: 2rem 0 1rem; }
-    .feed-item { background: #fff; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .feed-item h4 { color: #10b981; margin-bottom: 0.4rem; }
-    .feed-item small { display: block; margin-bottom: 0.6rem; color: #555; }
-    .feed-item img { max-width: 100%; border-radius: 6px; margin-top: 0.5rem; }
-    footer { background: #065f46; color: white; text-align: center; padding: 2rem; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif; }
+    body { background:#f8f9fa; color:#222; }
+    header { background: linear-gradient(to right, #065f46, #10b981); color:white; display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; position:sticky; top:0; z-index:1000; }
+    .logo-img { height:60px; width:auto; }
+    nav ul { list-style:none; display:flex; gap:1.2rem; }
+    nav a { color:white; text-decoration:none; font-weight:600; }
+    nav a:hover { color:#ffe79a; }
+    .menu-toggle { display:none; font-size:1.6rem; cursor:pointer; background:none; border:none; color:white; }
+    @media(max-width:768px){ nav ul{ display:none; flex-direction:column; background:#065f46; position:absolute; top:70px; right:20px; padding:1rem; border-radius:8px;} nav ul.show{display:flex;} .menu-toggle{display:block;} }
+    .hero { background:url('assets/images/news-hero.jpg') center/cover no-repeat; height:40vh; display:flex; align-items:center; justify-content:center; text-align:center; color:white; }
+    .hero h1 { background:rgba(0,0,0,0.5); padding:1rem 2rem; border-radius:10px; font-size:2.5rem; }
+    .section { max-width:1100px; margin:3rem auto; padding:0 1.5rem; }
+    .section h2 { color:#065f46; text-align:center; margin-bottom:1.5rem; }
+    .calendar-box { display:flex; justify-content:space-between; background:#ecfdf5; border-radius:8px; padding:1rem 1.5rem; margin-bottom:2rem; box-shadow:0 3px 8px rgba(0,0,0,0.05);}
+    .calendar-item { font-size:1.2rem; font-weight:600; color:#065f46; }
+    .news-card, .feed-item { background:white; margin-bottom:2rem; padding:1.5rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
+    .news-card h3, .feed-item h4 { margin-bottom:0.5rem; color:#10b981; }
+    .news-card p, .feed-item p { font-size:0.95rem; line-height:1.6; }
+    .feed-item small { display:block; margin-bottom:0.6rem; color:#555; }
+    .feed-item img { max-width:100%; border-radius:6px; margin-top:0.5rem; }
+    footer { background:#065f46; color:white; text-align:center; padding:2rem; }
   </style>
 </head>
 <body>
-
   <header>
-    <a href="index.html"><img src="a.jpg" alt="ICO Logo" class="logo-img" /></a>
+    <a href="index.html"><img src="a.jpg" alt="ICO Logo" class="logo-img"/></a>
     <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
     <nav>
       <ul id="nav-links">
@@ -64,13 +48,6 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-    <div id="user-container" style="display:flex;align-items:center;gap:1rem;">
-      <a id="login-link" href="login.html" style="color: white; font-weight: 600;">Login</a>
-      <div id="user-icon" style="display:none;cursor:pointer;background:#10b981;width:36px;height:36px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;"></div>
-      <div id="logout-box" style="display:none;position:absolute;top:70px;right:20px;background:white;color:black;padding:0.5rem 1rem;border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,0.1);z-index:1000;">
-        <button id="logout-btn" style="background:#ef4444;color:white;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">Logout</button>
-      </div>
-    </div>
   </header>
 
   <section class="hero"><h1>News & Islamic Calendar</h1></section>
@@ -82,27 +59,22 @@
     </div>
 
     <h2>Latest Updates</h2>
-
     <div class="news-card">
       <h3>Ramadhan Food Distribution Completed</h3>
       <p>Alhamdulillah, over 500 families received essential food packages during the holy month of Ramadhan. Thank you to all donors and volunteers!</p>
     </div>
-
     <div class="news-card">
       <h3>ICO Builds New Borehole in Mbale</h3>
       <p>Our clean water initiative has delivered its 3rd borehole this year, bringing clean drinking water to over 100 households.</p>
     </div>
   </section>
 
-  <!-- Live News Feed -->
   <section class="section feed-section">
     <h2>Live News Feed</h2>
     <div id="news-feed"></div>
   </section>
 
-  <footer>
-    &copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.
-  </footer>
+  <footer>&copy; 2025 IHKLAS CHARITY ORGANISATION (ICO). All rights reserved.</footer>
 
   <script>
     document.getElementById("menu-toggle").addEventListener("click", () => {
@@ -118,59 +90,51 @@
     updateDates(); setInterval(updateDates, 60000);
   </script>
 
-  <!-- Firebase SDK -->
- <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+  <!-- Firebase Live Feed -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// --- Firebase Config for ICO Project ---
-const firebaseConfig = {
-  apiKey: "AIzaSyDhStm93ZGdb_fN9drl-7nXM8VqaZaEgjk",
-  authDomain: "ihklas-charity-organisation.firebaseapp.com",
-  projectId: "ihklas-charity-organisation",
-  storageBucket: "ihklas-charity-organisation.appspot.com",
-  messagingSenderId: "293097470098",
-  appId: "1:293097470098:web:cc521c9da6f8b96c774e4b"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyDhStm93ZGdb_fN9drl-7nXM8VqaZaEgjk",
+      authDomain: "ihklas-charity-organisation.firebaseapp.com",
+      projectId: "ihklas-charity-organisation",
+      storageBucket: "ihklas-charity-organisation.appspot.com",
+      messagingSenderId: "293097470098",
+      appId: "1:293097470098:web:cc521c9da6f8b96c774e4b"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const feedContainer = document.getElementById("news-feed");
+    const newsQuery = query(collection(db, "news"), orderBy("timestamp", "desc"));
 
-const feedContainer = document.getElementById("news-feed");
+    onSnapshot(newsQuery, snapshot => {
+      feedContainer.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "feed-item";
+        div.innerHTML = `
+          <h4>${data.title}</h4>
+          <small>${data.timestamp?.toDate ? new Date(data.timestamp.toDate()).toLocaleString() : ''}</small>
+          <p>${data.description}</p>
+          ${data.imageUrl ? `<img src="${data.imageUrl}" alt="news image"/>` : ""}
+        `;
+        feedContainer.appendChild(div);
+      });
+    });
+  </script>
 
-const newsQuery = query(collection(db, "news"), orderBy("timestamp", "desc"));
-onSnapshot(newsQuery, snapshot => {
-  feedContainer.innerHTML = "";
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const div = document.createElement("div");
-    div.className = "feed-item";
-    div.innerHTML = `
-      <h4>${data.title}</h4>
-      <small>${data.timestamp?.toDate ? new Date(data.timestamp.toDate()).toLocaleString() : ''}</small>
-      <p>${data.description}</p>
-      ${data.imageUrl ? `<img src="${data.imageUrl}" alt="news image"/>` : ""}
-    `;
-    feedContainer.appendChild(div);
-  });
-});
-</script>
   <script>
-  // Prevent context menu
-  document.addEventListener('contextmenu', e => e.preventDefault());
-
-  // Disable certain keys
-  document.addEventListener('keydown', function(e) {
-    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-    if (
-      e.keyCode === 123 || 
-      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
-      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
-    ) {
-      e.preventDefault();
-      alert('Viewing source code is disabled on this page.');
-    }
-  });
-</script>
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if ([123].includes(e.keyCode) ||
+          (e.ctrlKey && e.shiftKey && [73,74].includes(e.keyCode)) ||
+          (e.ctrlKey && [85,83].includes(e.keyCode))) {
+        e.preventDefault(); alert('Viewing source code is disabled.');
+      }
+    });
+  </script>
 </body>
 </html>
