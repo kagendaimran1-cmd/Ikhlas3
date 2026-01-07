@@ -43,6 +43,7 @@
 </style>
 </head>
 <body>
+
 <header>
   <h1>Media Gallery</h1>
   <div>
@@ -92,161 +93,77 @@
 <div id="modal" class="modal"></div>
 <div id="toast" class="notification"></div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
 <script>
+const API = "https://ikhlas-backend.onrender.com";
+
 const themeToggle=document.getElementById('theme-toggle');
-themeToggle.addEventListener('click', ()=> {
+themeToggle.onclick=()=> {
   document.body.classList.toggle('dark');
-  themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
-});
-
-function toast(msg){
-  const n=document.getElementById('toast'); n.textContent=msg; n.style.display='block';
-  setTimeout(()=>{n.style.display='none'},2500);
-}
-
-const tabs = document.querySelectorAll('.tab');
-const panels = {
-  image: document.getElementById('panel-image'),
-  video: document.getElementById('panel-video'),
-  audio: document.getElementById('panel-audio')
+  themeToggle.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
 };
+
+const tabs=document.querySelectorAll('.tab');
+const panels={
+  image:panelImage=document.getElementById('panel-image'),
+  video:panelVideo=document.getElementById('panel-video'),
+  audio:panelAudio=document.getElementById('panel-audio')
+};
+
 tabs.forEach(t=>{
-  t.addEventListener('click', ()=>{
+  t.onclick=()=>{
     tabs.forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
-    const key=t.dataset.tab;
-    Object.keys(panels).forEach(k=> panels[k].style.display = (k===key)?'block':'none');
-    localStorage.setItem('selectedTab', key);
-  });
+    Object.keys(panels).forEach(k=>panels[k].style.display=(k===t.dataset.tab)?'block':'none');
+  };
 });
 
-// 🔑 Password-protected Upload link
-const uploadLink = document.getElementById('upload-link');
-uploadLink.addEventListener('click',(e)=>{
-  e.preventDefault();
-  const password = prompt("Enter password to access upload:");
-  if(password === "sheikh12345"){   // ✅ password is 12345
-    const tab = localStorage.getItem('selectedTab') || 'image';
-    window.location.href = `upload.html?tab=${tab}`;
-  } else if(password !== null) {
-    alert("Incorrect password!");
-  }
-});
-
-const modal = document.getElementById('modal');
-modal.addEventListener('click', ()=> modal.classList.remove('active'));
-
-// ✅ Replaced Firebase Config with the one you provided
-const firebaseConfig = {
-  apiKey: "AIzaSyCwBwFEJdkDnD2jPIw8ysx_dhICZUGNwBw",
-  authDomain: "media-gallery-72f75.firebaseapp.com",
-  projectId: "media-gallery-72f75",
-  storageBucket: "media-gallery-72f75.appspot.com",   // ✅ corrected
-  messagingSenderId: "266520533201",
-  appId: "1:266520533201:web:3302bf17639e30e133cdf0",
-  measurementId: "G-MNZ1055BJL"
+const grids={
+  image:document.getElementById('grid-images'),
+  video:document.getElementById('grid-videos'),
+  audio:document.getElementById('grid-audios')
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const storage = firebase.storage();
-db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
+const modal=document.getElementById('modal');
+modal.onclick=()=>modal.classList.remove('active');
 
-const grids = {
-  image: document.getElementById('grid-images'),
-  video: document.getElementById('grid-videos'),
-  audio: document.getElementById('grid-audios')
-};
-
-function itemCard(d){
-  const wrap = document.createElement('div');
-  wrap.className='item';
-
-  let media;
-  if(d.type==='image'){ media=document.createElement('img'); media.src=d.url; }
-  else if(d.type==='video'){ media=document.createElement('video'); media.src=d.url; media.controls=true; }
-  else{ media=document.createElement('audio'); media.src=d.url; media.controls=true; }
-
-  const name = document.createElement('div'); name.className='name'; name.textContent=d.name || '';
-  wrap.appendChild(media); wrap.appendChild(name);
+function card(d){
+  const w=document.createElement('div');w.className='item';
+  let m;
+  if(d.type==='image'){m=document.createElement('img')}
+  else if(d.type==='video'){m=document.createElement('video');m.controls=true}
+  else{m=document.createElement('audio');m.controls=true}
+  m.src=API+d.url;
+  const n=document.createElement('div');n.className='name';n.textContent=d.name;
+  w.append(m,n);
 
   if(d.type!=='audio'){
-    const view = document.createElement('button'); view.className='btn'; view.textContent='View';
-    view.addEventListener('click', ()=>{
+    const b=document.createElement('button');
+    b.className='btn';b.textContent='View';
+    b.onclick=()=>{
       modal.innerHTML='';
-      const el = (d.type==='image')? document.createElement('img') : document.createElement('video');
-      el.src=d.url; if(d.type==='video') el.controls=true;
-      modal.appendChild(el); modal.classList.add('active');
-    });
-    wrap.appendChild(view);
+      const x=d.type==='image'?document.createElement('img'):document.createElement('video');
+      x.src=API+d.url;if(d.type==='video')x.controls=true;
+      modal.appendChild(x);modal.classList.add('active');
+    };
+    w.appendChild(b);
   }
 
-  const dl = document.createElement('a'); dl.className='btn primary'; dl.textContent='Download'; 
-  dl.href=d.url; dl.download=d.name || 'file'; dl.style.display='block'; dl.style.margin='0.5rem auto';
-  wrap.appendChild(dl);
+  const dl=document.createElement('a');
+  dl.className='btn primary';dl.textContent='Download';
+  dl.href=API+d.url;dl.download=d.name;
+  dl.style.display='block';dl.style.margin='0.5rem auto';
+  w.appendChild(dl);
 
-  return wrap;
+  return w;
 }
 
-let lastSeen = Number(localStorage.getItem('lastUpdate') || '0');
-
-function loadOfflineItems(){
-  const offline = JSON.parse(localStorage.getItem('offlineMedia')||'[]');
-  offline.forEach(d=> grids[d.type]?.appendChild(itemCard(d)));
-}
-loadOfflineItems();
-
-db.collection('media').orderBy('createdAt','desc').onSnapshot(snap=>{
-  const newItems=[];
-  for(const k of Object.keys(grids)) grids[k].innerHTML='';
-  snap.forEach(doc=>{
-    const d = doc.data();
-    grids[d.type]?.appendChild(itemCard(d));
-    const ts = d.createdAt?.toMillis?.() || 0;
-    if(ts>lastSeen){ toast('New file uploaded'); lastSeen=ts; localStorage.setItem('lastUpdate',String(lastSeen)); }
-    newItems.push(d);
-  });
-  localStorage.setItem('offlineMedia', JSON.stringify(newItems));
+fetch(API+"/gallery")
+.then(r=>r.json())
+.then(data=>{
+  Object.values(grids).forEach(g=>g.innerHTML='');
+  data.forEach(d=>grids[d.type]?.appendChild(card(d)));
 });
-
-if('serviceWorker' in navigator){
-  const swCode = `
-    const CACHE='media-v1';
-    const ASSETS=['./gallery.html','./upload.html'];
-    self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))); });
-    self.addEventListener('fetch',e=>{
-      e.respondWith(caches.match(e.request).then(r=> r || fetch(e.request).then(resp=>{
-        const copy=resp.clone(); caches.open(CACHE).then(c=>{ if(e.request.method==='GET') c.put(e.request,copy); });
-        return resp;
-      })));
-    });
-  `;
-  const blob = new Blob([swCode], {type:'text/javascript'});
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl);
-}
 </script>
-<script>
-  // Prevent context menu
-  document.addEventListener('contextmenu', e => e.preventDefault());
 
-  // Disable certain keys
-  document.addEventListener('keydown', function(e) {
-    // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-    if (
-      e.keyCode === 123 || 
-      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) ||
-      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
-    ) {
-      e.preventDefault();
-      alert('Viewing source code is disabled on this page.');
-    }
-  });
-</script>
 </body>
 </html>
