@@ -78,7 +78,6 @@
     </ul>  
   </nav>  
   <div id="user-container">  
-    <img id="profile-pic" src="default-avatar.png" alt="Profile" />  
     <button class="menu-toggle"><i class="fas fa-bars"></i></button>  
     <div id="theme-toggle">🌙</div>  
   </div>  
@@ -112,7 +111,6 @@
 </section>  
 
 <script>  
-// ---------------- Theme Toggle ----------------
 const themeToggle = document.getElementById('theme-toggle');
 if (localStorage.getItem('theme') === 'dark') {
   document.body.classList.add('dark');
@@ -125,15 +123,12 @@ themeToggle.addEventListener('click', () => {
   themeToggle.textContent = dark ? '🌞' : '🌙';
   localStorage.setItem('theme', dark ? 'dark' : 'light');
 });
-
-// ---------------- Mobile Menu Toggle ----------------
 const menuToggle = document.querySelector('.menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
 menuToggle.addEventListener('click', () => {
   mobileMenu.classList.toggle('show');
 });
 
-// ---------------- Slider Functionality ----------------
 const slides = document.querySelectorAll('.slide');
 const caption = document.getElementById('slider-caption');
 const captions = [
@@ -162,7 +157,6 @@ setInterval(() => {
   caption.textContent = captions[index];
 }, 5000);
 
-// ---------------- Disable Right-Click & Key Shortcuts ----------------
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', function(e) {
   if (

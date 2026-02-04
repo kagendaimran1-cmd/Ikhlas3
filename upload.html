@@ -7,7 +7,6 @@
 <title>Upload</title>  
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">  
 <style>  
-/* ---------- YOUR ORIGINAL CSS ---------- */
 :root { --teal:#0f766e; --bg:#f3f4f6; --dark:#111; }  
 *{box-sizing:border-box}   
 body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);transition:.3s}  
@@ -66,7 +65,7 @@ body.dark .card{background:#181818;border-color:#2b2b2b}
 </header>  
 
 <main>  
-  <!-- Admin gate -->  
+
   <div class="section">  
     <div class="hint small">Admin access is protected by a password.</div>  
     <div class="pwbox">  
@@ -76,7 +75,7 @@ body.dark .card{background:#181818;border-color:#2b2b2b}
     </div>  
   </div>  
 
-  <!-- Upload controls -->  
+
   <div class="section">  
     <div class="toolbar">  
       <select id="file-kind">  
@@ -93,7 +92,7 @@ body.dark .card{background:#181818;border-color:#2b2b2b}
     <div class="hint small">After upload, all users will see the file instantly in <strong>Gallery</strong>. Only Admin can delete.</div>  
   </div>  
 
-  <!-- Lists by type -->  
+
   <div class="section">  
     <h2>Images</h2>  
     <div id="grid-images" class="grid"></div>  
@@ -111,21 +110,17 @@ body.dark .card{background:#181818;border-color:#2b2b2b}
 <div id="toast" class="notification"></div>  
 
 <script>
-const backendURL = "https://ikhlas-backend.onrender.com"; // your backend URL
-
-// ---------------- Theme Toggle ----------------
+const backendURL = "https://ikhlas-backend.onrender.com"; 
 const themeToggle = document.getElementById('theme-toggle');
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark');
   themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
 });
 
-// ---------------- Menu Toggle ----------------
+
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 menuBtn.addEventListener('click', () => menuDropdown.classList.toggle('show'));
-
-// ---------------- Toast ----------------
 function toast(msg, targetId = null) {
   const n = document.getElementById('toast');
   n.textContent = msg;
@@ -137,7 +132,7 @@ function toast(msg, targetId = null) {
   setTimeout(() => { n.style.display = 'none'; }, 4000);
 }
 
-// ---------------- Admin Password ----------------
+
 let ADMIN_PW = localStorage.getItem('adminPassword') || 'admin123';
 const pwInput = document.getElementById('pw-input');
 const pwCheck = document.getElementById('pw-check');
@@ -168,7 +163,7 @@ pwChange.addEventListener('click', () => {
   toast('Admin password changed');
 });
 
-// ---------------- File Upload ----------------
+
 const fileInput = document.getElementById('file-input');
 const pickBtn = document.getElementById('pick-btn');
 const uploadBtn = document.getElementById('upload-btn');
@@ -201,7 +196,7 @@ uploadBtn.addEventListener('click', async () => {
     try {
       const res = await fetch(`${backendURL}/upload`, { method:'POST', body: formData });
       if (!res.ok) throw new Error('Upload failed');
-      const data = await res.json(); // { name, path, type }
+      const data = await res.json(); 
       toast(`File "${data.name}" uploaded successfully!`);
       bar.style.width = '0';
       refreshAllGrids();
@@ -215,7 +210,7 @@ uploadBtn.addEventListener('click', async () => {
   pickedName.textContent = '';
 });
 
-// ---------------- Load & Display Files ----------------
+
 function createCard(d){
   const container = document.getElementById('grid-' + d.type + 's');
   const card = document.createElement('div');
@@ -265,7 +260,6 @@ async function refreshAllGrids(){
 
 refreshAllGrids();
 
-// Prevent context menu & certain keys
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e=>{
   if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74))||(e.ctrlKey&&(e.keyCode===85||e.keyCode===83))){
