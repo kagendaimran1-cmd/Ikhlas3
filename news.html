@@ -25,11 +25,12 @@
     .section h2 { color:#065f46; text-align:center; margin-bottom:1.5rem; }
     .calendar-box { display:flex; justify-content:space-between; background:#ecfdf5; border-radius:8px; padding:1rem 1.5rem; margin-bottom:2rem; box-shadow:0 3px 8px rgba(0,0,0,0.05);}
     .calendar-item { font-size:1.2rem; font-weight:600; color:#065f46; }
-    .news-card, .feed-item { background:white; margin-bottom:2rem; padding:1.5rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
-    .news-card h3, .feed-item h4 { margin-bottom:0.5rem; color:#10b981; }
-    .news-card p, .feed-item p { font-size:0.95rem; line-height:1.6; }
+    .feed-item { background:white; margin-bottom:2rem; padding:1.5rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05); position:relative; }
+    .feed-item h4 { margin-bottom:0.5rem; color:#10b981; }
+    .feed-item p { font-size:0.95rem; line-height:1.6; }
     .feed-item small { display:block; margin-bottom:0.6rem; color:#555; }
     .feed-item img { max-width:100%; border-radius:6px; margin-top:0.5rem; }
+    .remove-btn { position:absolute; top:6px; right:6px; background:#ef4444; color:white; border:none; padding:0.2rem 0.5rem; border-radius:6px; cursor:pointer; font-weight:600; }
     footer { background:#065f46; color:white; text-align:center; padding:2rem; }
   </style>
 </head>
@@ -59,18 +60,6 @@
     </div>
 
     <h2>Latest Updates</h2>
-    <div class="news-card">
-      <h3>Ramadhan Food Distribution Completed</h3>
-      <p>Alhamdulillah, over 500 families received essential food packages during the holy month of Ramadhan. Thank you to all donors and volunteers!</p>
-    </div>
-    <div class="news-card">
-      <h3>ICO Builds New Borehole in Mbale</h3>
-      <p>Our clean water initiative has delivered its 3rd borehole this year, bringing clean drinking water to over 100 households.</p>
-    </div>
-  </section>
-
-  <section class="section feed-section">
-    <h2>Live News Feed</h2>
     <div id="news-feed"></div>
   </section>
 
@@ -88,42 +77,34 @@
       document.getElementById("hijri-date").textContent = "Hijri: " + hijri.format('iD iMMMM iYYYY');
     }
     updateDates(); setInterval(updateDates, 60000);
-  </script>
 
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDhStm93ZGdb_fN9drl-7nXM8VqaZaEgjk",
-      authDomain: "ihklas-charity-organisation.firebaseapp.com",
-      projectId: "ihklas-charity-organisation",
-      storageBucket: "ihklas-charity-organisation.appspot.com",
-      messagingSenderId: "293097470098",
-      appId: "1:293097470098:web:cc521c9da6f8b96c774e4b"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
+    const backendURL = "http://localhost:3000"; // adjust for live server
     const feedContainer = document.getElementById("news-feed");
-    const newsQuery = query(collection(db, "news"), orderBy("timestamp", "desc"));
 
-    onSnapshot(newsQuery, snapshot => {
-      feedContainer.innerHTML = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.className = "feed-item";
-        div.innerHTML = `
-          <h4>${data.title}</h4>
-          <small>${data.timestamp?.toDate ? new Date(data.timestamp.toDate()).toLocaleString() : ''}</small>
-          <p>${data.description}</p>
-          ${data.imageUrl ? `<img src="${data.imageUrl}" alt="news image"/>` : ""}
-        `;
-        feedContainer.appendChild(div);
-      });
-    });
+    async function loadNews() {
+      feedContainer.innerHTML = '';
+      try {
+        const res = await fetch(`${backendURL}/news`);
+        const data = await res.json();
+        data.sort((a,b)=>b.date - a.date); // newest first
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'feed-item';
+          div.innerHTML = `
+            <h4>${item.title}</h4>
+            <small>${new Date(item.date).toLocaleString()}</small>
+            <p>${item.content}</p>
+            ${item.image ? `<img src="${backendURL}/${item.image}" alt="news image"/>` : ''}
+          `;
+          feedContainer.appendChild(div);
+        });
+      } catch(err) {
+        console.error(err);
+        feedContainer.innerHTML = '<p style="text-align:center; color:red;">Failed to load news.</p>';
+      }
+    }
+
+    loadNews();
   </script>
 
   <script>

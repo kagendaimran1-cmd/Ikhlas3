@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Upload News | IHKLAS CHARITY ORGANISATION (ICO)</title>
+  <title>Upload News | ICO</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link rel="stylesheet" href="styles.css"/>
   <style>
     body { font-family: 'Inter', sans-serif; background: #f8f9fa; margin: 0; padding: 0; color: #222; }
@@ -21,6 +20,9 @@
     .success, .error { text-align: center; margin-top: 1rem; font-weight: 600; }
     .success { color: #065f46; }
     .error { color: #ef4444; }
+    .card { position: relative; background:white; border-radius:10px; padding:1rem; margin-bottom:1rem; box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+    .card img { max-width:100%; border-radius:6px; margin-top:0.5rem; }
+    .remove { position:absolute; top:6px; right:6px; background:#ef4444; color:white; border:none; padding:0.2rem 0.5rem; border-radius:6px; cursor:pointer; }
   </style>
 </head>
 <body>
@@ -37,68 +39,96 @@
       <input type="file" id="imageFile" accept="image/*" />
       <button type="submit">Upload News</button>
     </form>
+
+    <h2>Uploaded News</h2>
+    <div id="news-grid" class="grid"></div>
     <div id="message"></div>
   </main>
 
-  
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
-
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDhStm93ZGdb_fN9drl-7nXM8VqaZaEgjk",
-      authDomain: "ihklas-charity-organisation.firebaseapp.com",
-      projectId: "ihklas-charity-organisation",
-      storageBucket: "ihklas-charity-organisation.appspot.com",
-      messagingSenderId: "293097470098",
-      appId: "1:293097470098:web:cc521c9da6f8b96c774e4b"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-
+    const backendURL = "http://localhost:3000"; // adjust for live server
     const form = document.getElementById('newsForm');
+    const newsGrid = document.getElementById('news-grid');
     const message = document.getElementById('message');
 
-    form.addEventListener('submit', async (e) => {
+    function toast(msg){
+      const n = document.createElement('div');
+      n.className = 'notification';
+      n.textContent = msg;
+      n.style.position = 'fixed';
+      n.style.top = '1rem';
+      n.style.right = '1rem';
+      n.style.backgroundColor = '#0f766e';
+      n.style.color = '#fff';
+      n.style.padding = '.6rem .9rem';
+      n.style.borderRadius = '8px';
+      n.style.zIndex = '2000';
+      document.body.appendChild(n);
+      setTimeout(()=> n.remove(), 2500);
+    }
+
+    function createNewsCard(item){
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.content}</p>
+        ${item.image ? `<img src="${backendURL}/${item.image}" alt="news image"/>` : ''}
+        <small>${new Date(item.date).toLocaleString()}</small>
+      `;
+      const rm = document.createElement('button');
+      rm.className = 'remove';
+      rm.textContent = '×';
+      rm.onclick = async ()=>{
+        if(!confirm('Delete this news item?')) return;
+        try{
+          const res = await fetch(`${backendURL}/delete-news`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({id:item.id})
+          });
+          const data = await res.json();
+          if(!data.success) throw new Error(data.error||'Failed to delete');
+          div.remove(); toast('News deleted successfully');
+        }catch(err){ console.error(err); toast(err.message); }
+      };
+      div.appendChild(rm);
+      newsGrid.prepend(div);
+    }
+
+    async function loadNews(){
+      newsGrid.innerHTML='';
+      try{
+        const res = await fetch(`${backendURL}/news`);
+        const data = await res.json();
+        data.sort((a,b)=>b.date - a.date);
+        data.forEach(createNewsCard);
+      }catch(err){ console.error(err); toast('Failed to load news'); }
+    }
+
+    form.addEventListener('submit', async e=>{
       e.preventDefault();
       const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
+      const content = document.getElementById('description').value.trim();
       const file = document.getElementById('imageFile').files[0];
+      if(!title||!content) return toast('Title and content are required');
 
-      try {
-        let imageUrl = null;
-        if (file) {
-          const storageRef = storage.ref('news-images/' + Date.now() + '-' + file.name);
-          await storageRef.put(file);
-          imageUrl = await storageRef.getDownloadURL();
-        }
+      const fd = new FormData();
+      fd.append('title', title);
+      fd.append('content', content);
+      if(file) fd.append('image', file);
 
-        await db.collection("news").add({
-          title,
-          description,
-          imageUrl,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        message.innerHTML = "<p class='success'>✅ News uploaded successfully!</p>";
+      try{
+        const res = await fetch(`${backendURL}/upload-news`, {method:'POST', body:fd});
+        const data = await res.json();
+        if(data.error) throw new Error(data.error);
+        createNewsCard(data);
         form.reset();
-      } catch (err) {
-        console.error(err);
-        message.innerHTML = "<p class='error'>❌ Failed to upload news.</p>";
-      }
+        toast('News uploaded successfully');
+      }catch(err){ console.error(err); toast(err.message); }
     });
-  </script>
-  <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-      if ([123].includes(e.keyCode) ||
-          (e.ctrlKey && e.shiftKey && [73,74].includes(e.keyCode)) ||
-          (e.ctrlKey && [85,83].includes(e.keyCode))) {
-        e.preventDefault(); alert('Viewing source code is disabled.');
-      }
-    });
+
+    loadNews();
   </script>
 </body>
 </html>
