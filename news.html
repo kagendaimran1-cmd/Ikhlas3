@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>News & Updates | ICO</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/hijri-date/lib/hijri-date.js"></script>
   <link rel="icon" type="image/png" href="favicon.png" />
   <style>
@@ -48,23 +48,14 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-  </header>
-
-  <section class="hero"><h1>News & Islamic Calendar</h1></section>
-
-  <section class="section">
+  </header>  <section class="hero"><h1>News & Islamic Calendar</h1></section>  <section class="section">
     <div class="calendar-box">
       <div class="calendar-item" id="gregorian-date">Loading Gregorian date...</div>
       <div class="calendar-item" id="hijri-date">Loading Hijri date...</div>
-    </div>
+    </div><h2>Latest Updates</h2>
+<div id="news-feed"></div>
 
-    <h2>Latest Updates</h2>
-    <div id="news-feed"></div>
-  </section>
-
-  <footer>&copy; 2025 ICO. All rights reserved.</footer>
-
-  <script>
+  </section>  <footer>&copy; 2025 ICO. All rights reserved.</footer>  <script>
     document.getElementById("menu-toggle").addEventListener("click", () => {
       document.getElementById("nav-links").classList.toggle("show");
     });
@@ -104,9 +95,7 @@
     }
 
     loadNews();
-  </script>
-  
-<script>
+  </script><script>
 document.addEventListener('contextmenu', e=>e.preventDefault());
 document.addEventListener('keydown', e=>{
   if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74))||(e.ctrlKey&&(e.keyCode===85||e.keyCode===83))){
@@ -114,6 +103,5 @@ document.addEventListener('keydown', e=>{
     alert('Viewing source code is disabled on this page.');
   }
 });
-</script>
-</body>
+</script></body>
 </html>
